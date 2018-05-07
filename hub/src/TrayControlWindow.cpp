@@ -21,6 +21,7 @@
 #include "OsBranchConsts.h"
 #include "RestWorker.h"
 #include "SettingsManager.h"
+#include "SshKeysController.h"
 #include "SystemCallWrapper.h"
 #include "TrayControlWindow.h"
 #include "libssh2/include/LibsshController.h"
@@ -89,6 +90,7 @@ TrayControlWindow::TrayControlWindow(QWidget* parent)
   p2p_current_status = P2PStatus_checker::P2P_LOADING;
 
   CPeerController::Instance()->init();
+  CSshKeysController::Instance();
 
   connect(CNotificationObserver::Instance(), &CNotificationObserver::notify,
           this, &TrayControlWindow::notification_received);
@@ -130,6 +132,9 @@ TrayControlWindow::TrayControlWindow(QWidget* parent)
   InitTrayIconTriggerHandler(m_sys_tray_icon, this);
   CHubController::Instance().force_refresh();
   login_success();
+  if(!is_e2e_avaibale()){
+      CNotificationObserver::Error(tr("Subutai E2E plugin is not installed. It's recommended to install it"), DlgNotification::N_ABOUT);
+  }
 }
 
 TrayControlWindow::~TrayControlWindow() {
@@ -270,7 +275,7 @@ void TrayControlWindow::create_tray_icon() {
   m_tray_menu->addAction(m_act_logout);
   m_tray_menu->addAction(m_act_quit);
 
-  m_sys_tray_icon->setIcon(QIcon(":/hub/cc_icon.png"));
+  m_sys_tray_icon->setIcon(QIcon(":/hub/cc_icon_last.png"));
 }
 
 void TrayControlWindow::get_sys_tray_icon_coordinates_for_dialog(
@@ -1352,6 +1357,10 @@ void TrayControlWindow::ssh_to_container_finished(
 }
 
 ////////////////////////////////////////////////////////////////////////////
+bool TrayControlWindow::is_e2e_avaibale(){
+    QString version_e2e;
+    return CSystemCallWrapper::subutai_e2e_version(version_e2e) == SCWE_SUCCESS;
+}
 ////////////////////////////////////////////////////////////////////////////
 void TrayControlWindow::desktop_to_container_finished(
     const CEnvironment &env,
