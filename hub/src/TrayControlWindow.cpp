@@ -184,16 +184,16 @@ void TrayControlWindow::create_tray_actions() {
       new QAction(QIcon(":/hub/Settings-07.png"), tr("Settings"), this);
   connect(m_act_settings, &QAction::triggered, this,
           &TrayControlWindow::show_settings_dialog);
-  m_act_settings->setToolTip(tr(""));
+  m_act_settings->setToolTip(tr("Settings"));
 
   m_act_hub =
       new QAction(QIcon(":/hub/Environmetns-07.png"), tr("Environments"), this);
-  m_act_hub->setToolTip(tr("menu"));
+  m_act_hub->setToolTip(tr("Environment"));
 
   m_act_quit = new QAction(QIcon(":/hub/Exit-07"), tr("Quit"), this);
   connect(m_act_quit, &QAction::triggered, this,
           &TrayControlWindow::application_quit);
-  m_act_quit->setToolTip(tr("Close control cente"));
+  m_act_quit->setToolTip(tr("Close control center"));
 
   m_act_launch_Hub =
       new QAction(QIcon(":/hub/Hub-07.png"), tr("Go to Bazaar"), this);
@@ -240,7 +240,7 @@ void TrayControlWindow::create_tray_actions() {
           &TrayControlWindow::show_create_dialog);
   m_empty_action = new QAction(tr("Empty"), this);
   m_empty_action->setEnabled(false);
-  m_empty_action->setToolTip(tr("You will create your Peer."));
+  m_empty_action->setToolTip(tr("Will create your Peer."));
 }
 ////////////////////////////////////////////////////////////////////////////
 void TrayControlWindow::create_tray_icon() {
@@ -250,15 +250,15 @@ void TrayControlWindow::create_tray_icon() {
 
   /*p2p status icon*/
   m_tray_menu->addAction(m_act_p2p_status);
-  m_act_p2p_status = new QAction(tr("Here is your status.Green: active, orange: not active"),this);
+  m_act_p2p_status = setToolTip(tr("P2P connection");
 
   m_tray_menu->addSeparator();
 
   m_tray_menu->addAction(m_act_launch_Hub);
-  m_act_launch_Hub = new QAction(tr("You will go to Bazaar"),this);
+  m_act_launch_Hub = setToolTip(tr("Will go to Bazaar"));
 
   m_tray_menu->addAction(m_act_balance);
-  m_act_balance = new QAction(tr("GoodWill"),this);
+  m_act_balance = setToolTip(tr("GoodWill"));
 
   m_tray_menu->addSeparator();
 
@@ -272,31 +272,31 @@ void TrayControlWindow::create_tray_icon() {
                                      tr("Local Peers"));
 
   m_local_peer_menu->addAction(m_empty_action);
-  m_act_create_peer->tr("You can create your peers");
+  m_act_create_peer = setToolTip(tr("Create your peers"));
 
   m_tray_menu->addAction(m_act_create_peer);
 
   m_tray_menu->addSeparator();
 
-  m_act_settings = new QAction(tr("Here you can see components"),this);
+  m_act_settings->setToolTip(tr("Here you can see components"));
   m_tray_menu->addAction(m_act_settings);
 
   m_tray_menu->addAction(m_act_ssh_keys_management);
-  m_act_ssh_keys_management = new QAction(tr("You can generate SSH keys"),this);
+  m_act_ssh_keys_management->setToolTip(tr("You can generate SSH keys"));
 
   m_tray_menu->addAction(m_act_notifications_history);
-  m_act_notifications_history = new QAction(tr("Notification about all components"),this);
+  m_act_notifications_history->setToolTip(tr("Notification about CC components"));
 
   m_tray_menu->addSeparator();
 
   m_tray_menu->addAction(m_act_about);
-  m_act_about = new QAction(tr("Information about CC"),this);
+  m_act_about->setToolTip(tr("Information about CC"));
 
   m_tray_menu->addAction(m_act_logout);
-  m_act_logout->tr("Sign out from your account");
+  m_act_logout->setToolTip(tr("Sign out from your account"));
 
   m_tray_menu->addAction(m_act_quit);
-  m_act_quit = new QAction(tr("Your application will quit"),this);
+  m_act_quit->setToolTip(tr("will quit"));
 
   m_sys_tray_icon->setIcon(QIcon(":/hub/cc_icon.png"));
 }
@@ -831,7 +831,6 @@ void TrayControlWindow::got_peer_info_sl(int type,
         default:
             break;
     }
-
     machine_peers_table[name] = updater_peer;
     if(!CSettingsManager::Instance().peer_finger(updater_peer.name()).isEmpty()){
         delete_peer_button_info(updater_peer.name(), 0);
@@ -1052,7 +1051,6 @@ void TrayControlWindow::delete_peer_button_info(const QString &peer_id, int type
         CSettingsManager::Instance().set_peer_finger(peer_local_backup_name, "");
     }
 }
-
 void TrayControlWindow::my_peer_button_pressed_sl(const my_peer_button *peer_info){
     if(peer_info == NULL){
         return;
@@ -1284,7 +1282,6 @@ void TrayControlWindow::show_about() {
 }
 
 ////////////////////////////////////////////////////////////////////////////
-
 QDialog* create_ssh_key_generate_dialog(QWidget* p) {
   return new DlgGenerateSshKey(p);
 }
